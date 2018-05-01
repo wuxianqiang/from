@@ -1,57 +1,53 @@
 <template>
   <div>
-    <!-- <div>{{aaa}}</div> -->
-    <el-form :model="dynamicValidateForm" ref="ruleForm" label-width="100px" class="demo-dynamic" :rules="getRules(rules)">
+    <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic" :rules="getRules">
       <el-form-item
         prop="email"
-        label="邮箱"
-      >
+        label="邮箱">
       <el-input v-model="dynamicValidateForm.email"></el-input>
-    </el-form-item>
-    <el-form-item 
-        label="姓名:" 
-        prop="name" 
-        :rules="[{ required: true, message: '请输入姓名', trigger: 'blur' }]">
-    <el-input v-model="dynamicValidateForm.name"></el-input>
-    </el-form-item>
-    <el-form-item label="手机号:" prop="mobil">
-        <el-input v-model="dynamicValidateForm.mobil"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submit"> Submit </el-button>
-    </el-form-item>
+      </el-form-item>
+      <el-form-item 
+          label="姓名:" 
+          prop="name">
+      <el-input v-model="dynamicValidateForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号:" prop="mobil">
+          <el-input v-model="dynamicValidateForm.mobil"></el-input>
+      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        dynamicValidateForm: {
-          email: '',
-          mobil: '',
-          name: ''
-        },
-        rules: {
-          'mobil':{required:true, type:'mobile'}
-        }
-      }
-    },
-    created () {
-    },
-    methods: {
-      submit(formName) {
+export default {
+  data() {
+    return {
+      dynamicValidateForm: {
+        email: "",
+        mobil: "",
+        name: ""
       },
-      getRules (rules) {
-        var ret = {}
-        for(var key in rules) {
-          ret[key] = this.filter_rules(rules[key]);
-        }
-        return ret;
+      rules: {
+        email: { required: true, type: "email" },
+        name: { required: true, maxLength: 3},
+        mobil: { required: true, type: "mobile" }
       }
+    };
+  },
+  created() {},
+  computed: {
+    getRules () {
+      var ret = {};
+      for (var key in this.rules) {
+        ret[key] = this.filter_rules(this.rules[key]);
+      }
+      return ret;
     }
+  },
+  methods: {
+    submit(formName) {}
   }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
