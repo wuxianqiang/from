@@ -85,7 +85,7 @@ export default function install(Vue, options) {
         min: 1,
         max: item.maxLength,
         message: '最多输入' + item.maxLength + '个字符!',
-        trigger: 'change'
+        trigger: ['blur', 'change']
       });
     }
     if (item.min && item.max) {
@@ -93,26 +93,26 @@ export default function install(Vue, options) {
         min: item.min,
         max: item.max,
         message: '字符长度在' + item.min + '至' + item.max + '之间!',
-        trigger: 'change'
+        trigger: ['blur', 'change']
       });
     }
     if (item.type) {
       let type = item.type;
       switch (type) {
         case 'email':
-          rules.push({type: 'email', message: '请输入正确的邮箱地址', trigger: 'change'});
+          rules.push({type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']});
           break;
         case 'qq':
-          rules.push({validator: isvalidateQQ, trigger: 'change'});
+          rules.push({validator: isvalidateQQ, trigger: ['blur', 'change']});
           break;
         case 'mobile':
-          rules.push({validator: isvalidateMobile, trigger: 'change'});
+          rules.push({validator: isvalidateMobile, trigger: ['blur', 'change']});
           break;
         case 'regexn':
-          rules.push({validator: isvalidateRegexn, trigger: 'change'});
+          rules.push({validator: isvalidateRegexn, trigger: ['blur', 'change']});
           break;
         case 'integer':
-          rules.push({validator: isvalidateInteger, trigger: 'change'});
+          rules.push({validator: isvalidateInteger, trigger: ['blur', 'change']});
           break;
         default:
           rule.push({});

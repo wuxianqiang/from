@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic" :rules="getRules">
+    <el-form :model="dynamicValidateForm" 
+             ref="dynamicValidateForm" 
+             label-width="100px" 
+             class="demo-dynamic" 
+             :rules="getRules">
       <el-form-item
         prop="email"
         label="邮箱">
@@ -28,8 +32,8 @@ export default {
         name: ""
       },
       rules: {
-        email: { required: true, type: "email" },
-        name: { required: true, maxLength: 3},
+        email: { required: true, type: "email"},
+        name: { required: true, maxLength: 5},
         mobil: { required: true, type: "mobile" }
       }
     };
@@ -41,6 +45,7 @@ export default {
       for (var key in this.rules) {
         ret[key] = this.filter_rules(this.rules[key]);
       }
+      console.log(ret)      
       return ret;
     }
   },
