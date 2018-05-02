@@ -15,8 +15,12 @@
           prop="name">
       <el-input v-model="dynamicValidateForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="手机号:" prop="mobil">
-          <el-input v-model="dynamicValidateForm.mobil"></el-input>
+      <el-form-item label="手机号:" prop="mobile">
+          <el-input v-model="dynamicValidateForm.mobile"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('dynamicValidateForm')">立即创建</el-button>
+        <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -28,34 +32,36 @@ export default {
     return {
       dynamicValidateForm: {
         email: "",
-        mobil: "",
+        mobile: "",
         name: ""
-      },
-      rules: {
-        email: { required: true, type: "email"},
-        name: { required: true, maxLength: 5},
-        mobil: { required: true, type: "mobile" }
       }
     };
   },
-  created() {},
   computed: {
+    // 必须传入和 type 值相等的元素，规则是根据传入的值进行校验的
     getRules () {
-      var ret = {};
-      for (var key in this.rules) {
-        ret[key] = this.filter_rules(this.rules[key]);
-      }
-      console.log(ret)      
-      return ret;
+      return this.formatData(['email', 'mobile', {name: { required: false, maxLength: 5 }}])
     }
   },
   methods: {
-    submit(formName) {}
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+          console.log(this.dynamicValidateForm)
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

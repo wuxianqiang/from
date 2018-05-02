@@ -1,19 +1,19 @@
-export function validateMoneyNumber(value) {
+export function validateMoneyNumber (value) {
   return /^1[3|4|5|8][0-9]\d{4,8}$/.test(value);
 }
 
-export function qq(value) {
+export function qq (value) {
   return /^1[3|4|5|8][0-9]\d{4,8}$/.test(value);
 }
 
-export function mobile(value) {
+export function mobile (value) {
   return /^1[3|4|5|8][0-9]\d{4,8}$/.test(value);
 }
 
-export function regexn(value) {
+export function regexn (value) {
   return /^1[3|4|5|8][0-9]\d{4,8}$/.test(value);
 }
 
-export function integer(value) {
+export function integer (value) {
   return /^1[3|4|5|8][0-9]\d{4,8}$/.test(value);
 }
