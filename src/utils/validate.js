@@ -1,5 +1,3 @@
-import formatRules from './dealRules'
-
 export default function install(Vue, options) {
 /**
  * Vue表单插件
@@ -30,9 +28,16 @@ Vue.prototype.formatData = function (data) {
       obj[data] = {type: data}
     }
     let ret = {}
+    let arr = []
     for (const key in obj) {
-      ret[key] = formatRules(obj[key]);
+      ret[key] = options(obj[key], this);
+      let val = obj[key]
+      for (const k in val) {
+        if (k === 'maxLength') {
+          arr.push(val[k])
+        }
+      }
     }
-    return ret
+    return [ret, arr]
   }
 }

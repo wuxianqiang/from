@@ -13,7 +13,12 @@
       <el-form-item 
           label="姓名:" 
           prop="name">
-      <el-input v-model="dynamicValidateForm.name"></el-input>
+        <el-input v-model="dynamicValidateForm.name" :maxlength="ml[0]"></el-input>
+      </el-form-item>
+      <el-form-item 
+          label="年龄:" 
+          prop="age">
+        <el-input v-model="dynamicValidateForm.age"></el-input>
       </el-form-item>
       <el-form-item label="手机号:" prop="mobile">
           <el-input v-model="dynamicValidateForm.mobile"></el-input>
@@ -33,14 +38,18 @@ export default {
       dynamicValidateForm: {
         email: "",
         mobile: "",
-        name: ""
-      }
+        name: "",
+        age: ""
+      },
+      ml: []
     };
   },
   computed: {
-    // 必须传入和 type 值相等的元素，规则是根据传入的值进行校验的
+    // 必须传入和 type na
     getRules () {
-      return this.formatData(['email', 'mobile', {name: { required: false, maxLength: 5 }}])
+      let ret = this.formatData(['email', 'mobile', {name: { required: false, maxLength: 8 }, age: {min: 1, max: 3}}])
+      this.ml = ret[1]
+      return ret[0]
     }
   },
   methods: {

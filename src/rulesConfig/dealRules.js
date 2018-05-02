@@ -69,10 +69,10 @@ const isvalidateInteger = (rule, value, callback) => {
  * 
  * @export
  * @param {object} item 传入对象作为参数
- * @returns 返回每个字段指定的规则
+ * @returns 返回每个字段的规则
  */
 
-export default function dealRules(item) {
+export default function dealRules(item, vm) {
   let rules = [];
   let {
     required = true,
@@ -82,7 +82,7 @@ export default function dealRules(item) {
     message = '格式不正确！'
   } = item
   if (required) {
-    rules.push({required: true, message: '该输入项为必填项!', trigger: 'blur'});
+    rules.push({required: true, message: '该输入项为必填项!', trigger: ['blur', 'change']});
   }
   if (item.maxLength) {
     rules.push({
