@@ -18,7 +18,7 @@
       <el-form-item
         prop="name"
         label="用户名">
-        <el-input v-model="dynamicValidateForm.name"></el-input>
+        <el-input v-model="dynamicValidateForm.name" :maxlength="ml.name"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -40,9 +40,9 @@ export default {
   computed: {
     // 必须传入和 type na
     getRules () {
-      let ret = this.formatData(['email', 'mobile', 'name'])
-      this.ml = ret[1]
-      return ret[0]
+      let {ret, MObj} = this.formatData(['email', 'mobile', 'name'])
+      this.ml = MObj
+      return ret
     }
   },
   methods: {

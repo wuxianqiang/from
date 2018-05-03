@@ -36,7 +36,7 @@ function dealValidate(options) {
  */
 function init(reg, msg) {
   return (rule, value, callback) => {
-    if (value !== '' || value !== undefined) {
+    if (value !== '') {
       if (!reg.test(value)) {
         callback(new Error(msg));
       } else {
@@ -51,16 +51,19 @@ function init(reg, msg) {
 export default function install(Vue, options) {
   let optionsArr = Object.keys(options) // 所有的配置key值
   let validateObj = dealValidate(options) // 所有的自定义处理函数
+  
   function dealRules(item) {
     let rules = [];
     let {
-      required = true,
+      required,
       trigger = [
         'blur', 'change'
       ],
-      message = '输入格式不正确！'
+      message
     } = item
-    if (required) {
+    let hasRequired = item.maxLength || (item.type && options[item.type] && options[item.type].required)
+    let hasMessage = message || (item.type && options[item.type] && options[item.type].message) || '输入格式不正确！'
+    if (hasRequired) {
       rules.push({
         required: true,
         message: '该输入项为必填项!',
@@ -68,7 +71,6 @@ export default function install(Vue, options) {
       });
     }
     // 数据都在配置文件里面，如果vue文件里面还有配置文件该怎么处理
-    console.log(item)
     let hasMaxLength = item.maxLength || (item.type && options[item.type] && options[item.type].maxLength)
     if (hasMaxLength) {
       const ML = options[item.type].maxLength
@@ -100,7 +102,7 @@ export default function install(Vue, options) {
         }
       } else {
         // 使用默认的校验规则
-        rules.push({type, message, trigger});
+        rules.push({type, message: hasMessage, trigger});
       }
     }
     return rules;
@@ -130,16 +132,17 @@ export default function install(Vue, options) {
       }
     }
     let ret = {}
-    let arr = []
     for (const key in obj) {
       ret[key] = dealRules(obj[key], this);
-      let val = obj[key]
-      for (const k in val) {
-        if (k === 'maxLength') {
-          arr.push(val[k])
-        }
+    }
+    let MObj =  {}
+    for (const key in ret) {
+      let tarObj = ret[key].find(item => 'max' in item)
+      if (tarObj) {
+        MObj[key] = tarObj.max
       }
     }
-    return [ret, arr]
+    console.log(ret)
+    return {ret, MObj}
   }
 }
