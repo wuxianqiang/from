@@ -16,9 +16,12 @@
         <el-input v-model="dynamicValidateForm.mobile"></el-input>
       </el-form-item>
       <el-form-item
-        prop="name"
-        label="用户名">
-        <el-input v-model="dynamicValidateForm.name" :maxlength="ml.name"></el-input>
+        prop="typeName"
+        label="分类名称">
+        <el-input v-model="dynamicValidateForm.typeName"></el-input>
+      </el-form-item>
+      <el-form-item label="写备注" prop="remark">
+        <el-input type="textarea" v-model="dynamicValidateForm.remark"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -32,7 +35,9 @@ export default {
         email: "",
         mobile: "",
         name: "",
-        age: ""
+        age: "",
+        typeName: "",
+        remark: ""
       },
       ml: []
     };
@@ -40,7 +45,7 @@ export default {
   computed: {
     // 必须传入和 type na
     getRules () {
-      let {ret, MObj} = this.formatData(['email', 'mobile', 'name'])
+      let {ret, MObj} = this.formatData(['email', 'mobile', 'typeName', 'remark'])
       this.ml = MObj
       return ret
     }
