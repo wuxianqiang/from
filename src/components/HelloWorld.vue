@@ -45,7 +45,7 @@ export default {
         remark: "",
         sortKey: ""
       },
-      ml: []
+      ml: {}
     };
   },
   computed: {

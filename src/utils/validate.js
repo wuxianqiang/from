@@ -136,13 +136,20 @@ export default function install(Vue, options) {
       ret[key] = dealRules(obj[key], this);
     }
     let MObj =  {}
-    for (const key in ret) {
-      let tarObj = ret[key].find(item => 'max' in item)
-      if (tarObj) {
-        MObj[key] = tarObj.max
-      }
-    }
-    console.log(ret)
+    // for (const key in ret) {
+    //   let tarObj = ret[key].find(item => 'max' in item)
+    //   if (tarObj) {
+    //     MObj[key] = tarObj.max
+    //   }
+    // }
+    // var proxy = new Proxy(MObj, {
+    //   get: function(target, property) {
+    //     if (property in target) return target[property]
+    //     throw new Error('Attribute does not exist: ' + property)
+    //   }
+    // });
+
+    // let mlx = Object.create(proxy);
     return {ret, MObj}
   }
 }
