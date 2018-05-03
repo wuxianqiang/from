@@ -66,7 +66,7 @@ export default function install(Vue, options) {
     if (hasRequired) {
       rules.push({
         required: true,
-        message: Array.isArray(hasMessage) ? (hasMessage.length > 1 ? hasMessage[1] : '该输入项为必填项') : '该输入项为必填项!',
+        message: Array.isArray(hasMessage) ? (hasMessage.length > 1 ? hasMessage[1] : '') : '',
         trigger: ['blur', 'change']
       });
     }
@@ -97,7 +97,7 @@ export default function install(Vue, options) {
         // 使用自定义校验规则
         for (const key in validateObj) {
           if (key === type) {
-            rules.push({validator: validateObj[key], trigger, message: Array.isArray(hasMessage) ? (hasMessage.length > 1 ? hasMessage[0] : '该输入项为必填项') : '该输入项为必填项!'});
+            rules.push({validator: validateObj[key], trigger, message: Array.isArray(hasMessage) ? (hasMessage.length > 1 ? hasMessage[0] : '') : ''});
           }
         }
       } else {
@@ -142,6 +142,7 @@ export default function install(Vue, options) {
         MObj[key] = tarObj.max
       }
     }
+    console.log(ret)
     return {ret, MObj}
   }
 }

@@ -23,6 +23,11 @@
       <el-form-item label="写备注" prop="remark">
         <el-input type="textarea" v-model="dynamicValidateForm.remark"></el-input>
       </el-form-item>
+      <el-form-item
+        prop="sortKey"
+        label="排序值">
+        <el-input v-model="dynamicValidateForm.sortKey" :maxlength="ml.sortKey"></el-input>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -37,7 +42,8 @@ export default {
         name: "",
         age: "",
         typeName: "",
-        remark: ""
+        remark: "",
+        sortKey: ""
       },
       ml: []
     };
@@ -45,7 +51,7 @@ export default {
   computed: {
     // 必须传入和 type na
     getRules () {
-      let {ret, MObj} = this.formatData(['email', 'mobile', 'typeName', 'remark'])
+      let {ret, MObj} = this.formatData(['email', 'mobile', 'typeName', 'remark', 'sortKey'])
       this.ml = MObj
       return ret
     }
