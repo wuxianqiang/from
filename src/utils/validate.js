@@ -1,4 +1,8 @@
-
+/**
+ * 处理传参问题的函数
+ * @param {Object} options 该参数是配置选项
+ * @returns 返回处理好的规则
+ */
 function dealValidate(options) {
   let obj = {}
   for (const key in options) {
@@ -6,8 +10,17 @@ function dealValidate(options) {
     for (const k in val) {
       if (k === 'validator') {
         let v = val[k]
+        // 处理 validator 是正则的情况，默认会把输入的值和正则进行匹配
         if (Object.prototype.toString.call(v) === '[object RegExp]') {
           obj[key] = init(v, val.message)
+        }
+        // 处理 validator 是函数的情况，一般自定义函数可以处理一些极端条件
+        else if (Object.prototype.toString.call(v) === '[object Function]') {
+          obj[key] = val[k]
+        }
+        // 如果 validator 是其他情况，则表示可以输入任意字符
+        else {
+          obj[key] = init(/.+/, val.message)
         }
       }
     }
@@ -15,10 +28,16 @@ function dealValidate(options) {
   return obj
 }
 
+/**
+ * 正则作为校验规则
+ * @param {RegExp} reg 传入正则作为自定义规则
+ * @param {String} msg 传入输入错误时的提示信息
+ * @returns 返回处理函数
+ */
 function init(reg, msg) {
   return (rule, value, callback) => {
-    if (v === '' || v === undefined) {
-      if (!reg(value)) {
+    if (value !== '' || value !== undefined) {
+      if (!reg.test(value)) {
         callback(new Error(msg));
       } else {
         callback()
@@ -30,9 +49,8 @@ function init(reg, msg) {
 }
 
 export default function install(Vue, options) {
-  let optionsArray = Object.keys(options)
-  console.log(optionsArray)
-  dealValidate(options)
+  let optionsArr = Object.keys(options) // 所有的配置key值
+  let validateObj = dealValidate(options) // 所有的自定义处理函数
   function dealRules(item) {
     let rules = [];
     let {
@@ -49,12 +67,16 @@ export default function install(Vue, options) {
         trigger: ['blur', 'change']
       });
     }
-    if (item.maxLength) {
+    // 数据都在配置文件里面，如果vue文件里面还有配置文件该怎么处理
+    console.log(item)
+    let hasMaxLength = item.maxLength || (item.type && options[item.type] && options[item.type].maxLength)
+    if (hasMaxLength) {
+      const ML = options[item.type].maxLength
       rules.push({
         min: 1,
-        max: item.maxLength,
-        message: '最多输入' + item.maxLength + '个字符!',
-        trigger: ['blur', 'change']
+        max: ML,
+        message: options[item.type].message ? options[item.type].message : '最多输入' + ML + '个字符!',
+        trigger: options[item.type].trigger ? options[item.type].message : ['blur', 'change']
       });
     }
     if (item.min && item.max) {
@@ -65,15 +87,20 @@ export default function install(Vue, options) {
         trigger: ['blur', 'change']
       });
     }
+    
     if (item.type) {
       let type = item.type;
-      switch (type) {
-        case 'email':
-          rules.push({type: 'email', message, trigger});
-          break;
-        default:
-          rule.push({});
-          break;
+      let hasType = optionsArr.includes(type)
+      if (hasType) {
+        // 使用自定义校验规则
+        for (const key in validateObj) {
+          if (key === type) {
+            rules.push({validator: validateObj[key], trigger});
+          }
+        }
+      } else {
+        // 使用默认的校验规则
+        rules.push({type, message, trigger});
       }
     }
     return rules;
